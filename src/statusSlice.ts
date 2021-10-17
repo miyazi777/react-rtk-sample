@@ -14,10 +14,10 @@ export const statusSlice = createSlice({
   initialState,     // sliceの初期値
   reducers: {},     // reducers
   extraReducers: (builder) => {
-    builder.addCase(increment, (state) => {
+    builder.addCase(increment, (state) => { // counterSliceのincrement呼び出しに応じてstatusを変更する
       state.status= 'increment';
     })
-    builder.addCase(decrement, (state) => {
+    builder.addCase(decrement, (state) => { // counterSliceのdecrement呼び出しに応じてstatusを変更する
       state.status = 'decrement';
     })
   }
