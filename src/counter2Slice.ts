@@ -32,10 +32,10 @@ export const counter2Slice = createSlice({
   reducers: {},      // reducers
   extraReducers: (builder) => {
     builder
-      .addCase(incrementAsync.pending, (state) => {
+      .addCase(incrementAsync.pending, (state) => {   // 処理が開始された時にこちらが呼び出される
         state.status = 'loading';
       })
-      .addCase(incrementAsync.fulfilled, (state, action) => {
+      .addCase(incrementAsync.fulfilled, (state, action) => { // Promiseのresolveが呼び出されたらこの処理が行われる
         state.status = 'idle';
         state.value += action.payload
       });
