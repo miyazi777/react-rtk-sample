@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { incrementByAmount } from "./counterSlice";
 import { RootState } from './store';
 
 type Counter2State = {
@@ -10,10 +11,11 @@ const initialState: Counter2State = {
   status: 'idle',
 }
 
-// APIの代わり
+// APIの代わりの非同期関数
 function fetchCount(amount = 1) {
-  return new Promise<{ data: number }>(resolve =>
+  return new Promise<{ data: number }>((resolve, reject) =>
     setTimeout(() => resolve({ data: amount }), 500)
+    //reject({})
   )
 }
 
@@ -32,13 +34,16 @@ export const counter2Slice = createSlice({
   reducers: {},      // reducers
   extraReducers: (builder) => {
     builder
-      .addCase(incrementAsync.pending, (state) => {   // 処理が開始された時にこちらが呼び出される
+      .addCase(incrementAsync.pending, (state) => {   // 処理が開始された時(pending)にこちらが呼び出される
         state.status = 'loading';
       })
-      .addCase(incrementAsync.fulfilled, (state, action) => { // Promiseのresolveが呼び出されたらこの処理が行われる
+      .addCase(incrementAsync.fulfilled, (state, action) => { // Promiseのresolveが呼び出されたら(fulfilled)この処理が行われる
         state.status = 'idle';
         state.value += action.payload
-      });
+      })
+      .addCase(incrementAsync.rejected, (state, action) => {  // Promiseのrejectが呼び出されたら(rejected)この処理が行われる
+        state.status = 'failed';
+      })
   }
 })
 
